@@ -1,5 +1,7 @@
 {
   "name": "ScrabbleWordCheck",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainMenuPageModule } from './pages/main-menu/main-menu.module';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,10 @@ import { MainMenuPageModule } from './pages/main-menu/main-menu.module';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    IonicStorageModule.forRoot({
+      name: 'main_db',
+      driverOrder: ['sqlite', 'indexeddb', 'websql']
+    }),
     MainMenuPageModule,
   ],
   providers: [
@@ -26,4 +31,4 @@ import { MainMenuPageModule } from './pages/main-menu/main-menu.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
