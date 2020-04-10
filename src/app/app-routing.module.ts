@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { MENU_ROUTE, CHECK_ROUTE, DBINIT_ROUTE } from './core/strings';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
+    redirectTo: `/${MENU_ROUTE}/${CHECK_ROUTE}`,
     pathMatch: 'full'
+  }, {
+    path: DBINIT_ROUTE,
+    loadChildren: () => import('./pages/db-init/db-init.module').then(m => m.DbInitPageModule)
   },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  }
 ];
 
 @NgModule({
@@ -19,4 +19,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
