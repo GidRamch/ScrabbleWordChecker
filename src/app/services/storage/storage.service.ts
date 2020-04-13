@@ -5,15 +5,17 @@ import { Platform } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
-export class StorageProviderService {
+export class StorageService {
+
   constructor(
     private storage: Storage,
     private platform: Platform) { }
 
+
   /**
    *  Returns a promise which resolves when the storage is ready
    */
-  async isReady(): Promise<void> {
+  private async isReady(): Promise<void> {
     await this.platform.ready();
     const localForage = await this.storage.ready();
     return localForage.ready();

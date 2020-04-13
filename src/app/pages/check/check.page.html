@@ -8,5 +8,7 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-input clearInput type="text" [(ngModel)]="inputWord" placeholder="Enter a word!"></ion-input>
+  <ion-button color="primary" fill="outline" shape="round" (click)="wordSubmitted()">Check</ion-button>
+  <ion-card>{{status}}</ion-card>
 </ion-content>
