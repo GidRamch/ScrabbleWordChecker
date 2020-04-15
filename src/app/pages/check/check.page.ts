@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoadingService } from 'src/app/services/loading/loading.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { map } from 'rxjs/operators';
+import { Animation, AnimationController, IonImg } from '@ionic/angular';
 
 @Component({
   selector: 'app-check',
@@ -13,12 +14,15 @@ import { map } from 'rxjs/operators';
 export class CheckPage implements OnInit {
   title = CHECK_TITLE;
   inputWord = '';
+  savedInputWord = '';
   status: 'ready' | 'waiting' | 'invalid' | 'valid' = 'ready';
+
 
   constructor(
     private http: HttpClient,
     private loading: LoadingService,
-    private toast: ToastService
+    private toast: ToastService,
+    private animationCtrl: AnimationController
   ) { }
 
   ngOnInit() { }
@@ -31,13 +35,13 @@ export class CheckPage implements OnInit {
    */
   wordSubmitted(): void {
     try {
+      this.savedInputWord = this.inputWord.trim();
       console.log(this.inputWord);
-      this.inputWord = this.inputWord.trim();
-      if (this.inputWord && this.inputWord.length > 1) {
-        this.checkWord(this.inputWord.toLocaleLowerCase());
+      this.savedInputWord = this.savedInputWord.trim();
+      if (this.savedInputWord && this.savedInputWord.length > 1) {
+        this.checkWord(this.savedInputWord.toLocaleLowerCase());
       } else {
-        this.status = 'invalid';
-        this.toast.presentToast('Scrabble words must be longer than 1 character!', true);
+        this.handleInputError(Error('Word is to short!'));
       }
     } catch (error) {
       this.handleInputError(error);
@@ -57,13 +61,42 @@ export class CheckPage implements OnInit {
       const lookUp = await this.http.get(`/assets/json/${word[0]}.json`).pipe(map(res => res[word])).toPromise();
       if (lookUp) {
         this.status = 'valid';
+        this.animateImage('#check_image');
       } else {
         this.status = 'invalid';
+        this.animateImage('#x_image');
       }
       await this.loading.dismiss();
     } catch (error) {
       this.handleInputError(error);
     }
+  }
+
+
+  animateImage(id: string) {
+    const ref = document.querySelector(id);
+    console.log(ref);
+    const animation: Animation = this.animationCtrl.create()
+      .addElement(ref)
+      .duration(1000)
+      .keyframes([
+        { offset: 0, transform: 'scale(0)'},
+        { offset: 0.1, transform: 'scale(0.08)'},
+        { offset: 0.2, transform: 'scale(0.3)'},
+        { offset: 0.3, transform: 'scale(0.69)'},
+        { offset: 0.36, transform: 'scale(1)'},
+        { offset: 0.4, transform: 'scale(0.91)'},
+        { offset: 0.5, transform: 'scale(0.77)'},
+        { offset: 0.5, transform: 'scale(0.75)'},
+        { offset: 0.6, transform: 'scale(0.78)'},
+        { offset: 0.73, transform: 'scale(1)'},
+        { offset: 0.82, transform: 'scale(0.94)'},
+        { offset: 0.93, transform: 'scale(1)'},
+        { offset: 0.95, transform: 'scale(0.98)'},
+        { offset: 1, transform: 'scale(1)'},
+      ]);
+      // .fromTo('transform', 'scale(0)', 'scale(1)');
+    animation.play();
   }
 
 
@@ -75,5 +108,6 @@ export class CheckPage implements OnInit {
     await this.loading.dismiss();
     console.error(error);
     this.status = 'invalid';
+    this.animateImage('#x_image');
   }
 }

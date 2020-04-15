@@ -7,9 +7,6 @@ const routes: Routes = [
     path: '',
     redirectTo: `/${MENU_ROUTE}/${CHECK_ROUTE}`,
     pathMatch: 'full'
-  }, {
-    path: DBINIT_ROUTE,
-    loadChildren: () => import('./pages/db-init/db-init.module').then(m => m.DbInitPageModule)
   },
 ];
 
