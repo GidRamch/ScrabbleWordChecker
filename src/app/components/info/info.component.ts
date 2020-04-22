@@ -12,6 +12,10 @@ export class InfoComponent implements OnInit {
 
   ngOnInit() { }
 
+
+  /**
+   * Dismisses the info popover
+   */
   async dismissPopover(): Promise<boolean> {
     return await this.popoverCtrl.dismiss();
   }

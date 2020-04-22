@@ -36,12 +36,11 @@ export class CheckPage implements OnInit {
   wordSubmitted(): void {
     try {
       this.savedInputWord = this.inputWord.trim();
-      console.log(this.inputWord);
       this.savedInputWord = this.savedInputWord.trim();
       if (this.savedInputWord && this.savedInputWord.length > 1) {
         this.checkWord(this.savedInputWord.toLocaleLowerCase());
       } else {
-        this.handleInputError(Error('Word is to short!'));
+        this.handleInputError(Error('Word is too short!'));
       }
     } catch (error) {
       this.handleInputError(error);
@@ -73,9 +72,13 @@ export class CheckPage implements OnInit {
   }
 
 
+  /**
+   * Animates the element with the given id using a bounce effect,
+   * based on scale.
+   * @param id unique identifier of html element to animate
+   */
   animateImage(id: string) {
     const ref = document.querySelector(id);
-    console.log(ref);
     const animation: Animation = this.animationCtrl.create()
       .addElement(ref)
       .duration(1000)
@@ -95,7 +98,6 @@ export class CheckPage implements OnInit {
         { offset: 0.95, transform: 'scale(0.98)' },
         { offset: 1, transform: 'scale(1)' },
       ]);
-    // .fromTo('transform', 'scale(0)', 'scale(1)');
     animation.play();
   }
 
@@ -112,6 +114,9 @@ export class CheckPage implements OnInit {
   }
 
 
+  /**
+   * Opens the info popover
+   */
   async openInfo(): Promise<void> {
     const popover = this.popoverCtrl.create({
       component: InfoComponent,
