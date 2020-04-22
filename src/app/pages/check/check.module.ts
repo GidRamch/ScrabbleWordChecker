@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CheckPageRoutingModule } from './check-routing.module';
 
 import { CheckPage } from './check.page';
+import { InfoComponent } from 'src/app/components/info/info.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { CheckPage } from './check.page';
     IonicModule,
     CheckPageRoutingModule
   ],
-  declarations: [CheckPage]
+  declarations: [CheckPage, InfoComponent],
+  entryComponents: [InfoComponent],
 })
 export class CheckPageModule {}

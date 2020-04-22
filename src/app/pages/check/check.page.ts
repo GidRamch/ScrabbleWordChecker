@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CHECK_TITLE } from 'src/app/core/strings';
 import { HttpClient } from '@angular/common/http';
 import { LoadingService } from 'src/app/services/loading/loading.service';
-import { ToastService } from 'src/app/services/toast/toast.service';
 import { map } from 'rxjs/operators';
-import { Animation, AnimationController, IonImg } from '@ionic/angular';
+import { Animation, AnimationController, PopoverController } from '@ionic/angular';
+import { InfoComponent } from 'src/app/components/info/info.component';
 
 @Component({
   selector: 'app-check',
@@ -21,8 +21,8 @@ export class CheckPage implements OnInit {
   constructor(
     private http: HttpClient,
     private loading: LoadingService,
-    private toast: ToastService,
-    private animationCtrl: AnimationController
+    private animationCtrl: AnimationController,
+    private popoverCtrl: PopoverController
   ) { }
 
   ngOnInit() { }
@@ -80,22 +80,22 @@ export class CheckPage implements OnInit {
       .addElement(ref)
       .duration(1000)
       .keyframes([
-        { offset: 0, transform: 'scale(0)'},
-        { offset: 0.1, transform: 'scale(0.08)'},
-        { offset: 0.2, transform: 'scale(0.3)'},
-        { offset: 0.3, transform: 'scale(0.69)'},
-        { offset: 0.36, transform: 'scale(1)'},
-        { offset: 0.4, transform: 'scale(0.91)'},
-        { offset: 0.5, transform: 'scale(0.77)'},
-        { offset: 0.5, transform: 'scale(0.75)'},
-        { offset: 0.6, transform: 'scale(0.78)'},
-        { offset: 0.73, transform: 'scale(1)'},
-        { offset: 0.82, transform: 'scale(0.94)'},
-        { offset: 0.93, transform: 'scale(1)'},
-        { offset: 0.95, transform: 'scale(0.98)'},
-        { offset: 1, transform: 'scale(1)'},
+        { offset: 0, transform: 'scale(0)' },
+        { offset: 0.1, transform: 'scale(0.08)' },
+        { offset: 0.2, transform: 'scale(0.3)' },
+        { offset: 0.3, transform: 'scale(0.69)' },
+        { offset: 0.36, transform: 'scale(1)' },
+        { offset: 0.4, transform: 'scale(0.91)' },
+        { offset: 0.5, transform: 'scale(0.77)' },
+        { offset: 0.5, transform: 'scale(0.75)' },
+        { offset: 0.6, transform: 'scale(0.78)' },
+        { offset: 0.73, transform: 'scale(1)' },
+        { offset: 0.82, transform: 'scale(0.94)' },
+        { offset: 0.93, transform: 'scale(1)' },
+        { offset: 0.95, transform: 'scale(0.98)' },
+        { offset: 1, transform: 'scale(1)' },
       ]);
-      // .fromTo('transform', 'scale(0)', 'scale(1)');
+    // .fromTo('transform', 'scale(0)', 'scale(1)');
     animation.play();
   }
 
@@ -109,5 +109,13 @@ export class CheckPage implements OnInit {
     console.error(error);
     this.status = 'invalid';
     this.animateImage('#x_image');
+  }
+
+
+  async openInfo(): Promise<void> {
+    const popover = this.popoverCtrl.create({
+      component: InfoComponent,
+    });
+    return (await popover).present();
   }
 }
