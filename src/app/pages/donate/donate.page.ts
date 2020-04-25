@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DONATE_TITLE } from 'src/app/core/strings';
+import { AnimationService } from 'src/app/services/animation/animation.service';
 
 @Component({
   selector: 'app-donate',
@@ -9,9 +10,9 @@ import { DONATE_TITLE } from 'src/app/core/strings';
 export class DonatePage implements OnInit {
   title = DONATE_TITLE;
 
-  constructor() { }
+  constructor(private animService: AnimationService) { }
 
   ngOnInit() {
+    this.animService.scaleBounce(document.querySelector('#clock_image'));
   }
-
 }
