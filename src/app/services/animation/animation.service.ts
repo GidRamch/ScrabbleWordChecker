@@ -14,7 +14,7 @@ export class AnimationService {
    * based on scale.
    * @param element reference to element to animate
    */
-  scaleBounce(element: Element) {
+  scaleBounce(element: Element): void {
     const animation: Animation = this.animationCtrl.create()
       .addElement(element)
       .duration(1000)

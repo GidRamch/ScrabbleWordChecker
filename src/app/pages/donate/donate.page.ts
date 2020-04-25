@@ -8,11 +8,11 @@ import { AnimationService } from 'src/app/services/animation/animation.service';
   styleUrls: ['./donate.page.scss'],
 })
 export class DonatePage implements OnInit {
-  title = DONATE_TITLE;
+  title = DONATE_TITLE; // Title of page;
 
   constructor(private animService: AnimationService) { }
 
   ngOnInit() {
-    this.animService.scaleBounce(document.querySelector('#clock_image'));
+    this.animService.scaleBounce(document.querySelector('#clock_image')); // Animate the clock image
   }
 }

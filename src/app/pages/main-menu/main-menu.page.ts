@@ -19,9 +19,9 @@ import {
   styleUrls: ['./main-menu.page.scss'],
 })
 export class MainMenuPage implements OnInit {
-  public selectedIndex = 0;
-  title = MENU_TITLE;
-  note = MENU_NOTE;
+  public selectedIndex = 0; // Current page
+  title = MENU_TITLE;       // Title of menu
+  note = MENU_NOTE;         // Note on menu
 
   public appPages = [
     {

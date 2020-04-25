@@ -7,16 +7,18 @@ import { PopoverController } from '@ionic/angular';
 import { InfoComponent } from 'src/app/components/info/info.component';
 import { AnimationService } from 'src/app/services/animation/animation.service';
 
+type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
+
 @Component({
   selector: 'app-check',
   templateUrl: './check.page.html',
   styleUrls: ['./check.page.scss'],
 })
 export class CheckPage implements OnInit {
-  title = CHECK_TITLE;    // Title of page
-  inputWord = '';         // Word entered by user
-  savedInputWord = '';    // Word captured from input for checking
-  status: 'ready' | 'waiting' | 'invalid' | 'valid' = 'ready'; // Holds to stage of processing a word
+  title = CHECK_TITLE;      // Title of page
+  inputWord = '';           // Word entered by user
+  savedInputWord = '';      // Word captured from input for checking
+  status: Status = 'ready'; // Holds to stage of processing a word
 
 
   constructor(

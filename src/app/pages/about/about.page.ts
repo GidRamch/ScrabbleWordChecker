@@ -7,7 +7,7 @@ import { ABOUT_TITLE } from 'src/app/core/strings';
   styleUrls: ['./about.page.scss'],
 })
 export class AboutPage implements OnInit {
-  title = ABOUT_TITLE;
+  title = ABOUT_TITLE;  // Title of page
 
   constructor() { }
 

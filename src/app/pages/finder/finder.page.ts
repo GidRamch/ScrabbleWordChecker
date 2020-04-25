@@ -13,6 +13,6 @@ export class FinderPage implements OnInit {
   constructor(private animService: AnimationService) { }
 
   ngOnInit() {
-    this.animService.scaleBounce(document.querySelector('#clock_image'));
+    this.animService.scaleBounce(document.querySelector('#clock_image')); // Animate the clock image
   }
 }
