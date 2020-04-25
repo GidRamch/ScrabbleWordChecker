@@ -26,7 +26,9 @@ export class CheckPage implements OnInit {
     private animService: AnimationService
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.animService.scaleBounce(document.querySelector('#search_image'));
+  }
 
 
   /**

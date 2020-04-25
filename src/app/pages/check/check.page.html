@@ -29,8 +29,17 @@
         </ion-button>
       </ion-col>
 
-      <ion-col [hidden]="status !== 'valid'" size="6" offset="3" size-md="4" offset-md="4" size-xl="2" offset-xl="5">
-        <img src="/assets/img/checkmark.png" id="check_image" />
+      <ion-col [hidden]="status !== 'ready'" size="6" offset="3" size-md="4" offset-md="4" size-xl="2" offset-xl="5">
+        <img src="/assets/img/search.png" id="search_image" />
+      </ion-col>
+
+      <ion-col *ngIf="status === 'ready'" size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6"
+        offset-xl="3">
+        <h1>Enter a word in the area provided, then click the 'CHECK WORD' button!</h1>
+      </ion-col>
+
+      <ion-col [hidden]="status !== 'invalid'" size="6" offset="3" size-md="4" offset-md="4" size-xl="2" offset-xl="5">
+        <img src="/assets/img/x.png" id="x_image" />
       </ion-col>
 
       <ion-col *ngIf="status === 'valid'" size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6"
