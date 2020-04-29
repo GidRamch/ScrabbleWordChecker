@@ -25,13 +25,12 @@ export class CheckPage implements OnInit {
     private http: HttpClient,
     private loading: LoadingService,
     private popoverCtrl: PopoverController,
-    private animService: AnimationService
+    private animService: AnimationService,
   ) { }
 
   ngOnInit() {
     this.animService.scaleBounce(document.querySelector('#search_image'));
   }
-
 
   /**
    * Called when the check button is pressed. Cleans up the word,

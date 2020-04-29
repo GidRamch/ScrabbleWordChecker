@@ -12,6 +12,7 @@ import {
   MENU_TITLE,
   MENU_NOTE
 } from 'src/app/core/strings';
+import { ThemeService } from 'src/app/services/theme/theme.service';
 
 @Component({
   selector: 'app-main-menu',
@@ -43,7 +44,7 @@ export class MainMenuPage implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(public themeService: ThemeService) { }
 
   ngOnInit() {
     const path = window.location.pathname.split('folder/')[1];
