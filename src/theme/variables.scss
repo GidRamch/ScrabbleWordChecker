@@ -414,3 +414,7 @@ body.dark {
   --ion-color-tint: var(--ion-color-statusbar-tint);
 }
 
+/* Optional CSS, this is added for the flashing that happens when toggling between themes */
+ion-item {
+  --transition: none;
+}
