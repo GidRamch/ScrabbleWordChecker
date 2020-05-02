@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import {
   CHECK_ROUTE,
-  FINDER_ROUTE,
   ABOUT_ROUTE,
   DONATE_ROUTE,
   MENU_ROUTE,
   CHECK_TITLE,
-  FINDER_TITLE,
   ABOUT_TITLE,
   DONATE_TITLE,
   MENU_TITLE,
@@ -29,10 +27,6 @@ export class MainMenuPage {
       title: CHECK_TITLE,
       url: `/${MENU_ROUTE}/${CHECK_ROUTE}`,
       icon: 'checkmark-circle'
-    }, {
-      title: FINDER_TITLE,
-      url: `/${MENU_ROUTE}/${FINDER_ROUTE}`,
-      icon: 'search'
     }, {
       title: ABOUT_TITLE,
       url: `/${MENU_ROUTE}/${ABOUT_ROUTE}`,
