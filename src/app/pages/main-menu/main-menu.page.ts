@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   CHECK_ROUTE,
   FINDER_ROUTE,
@@ -19,7 +19,7 @@ import { ThemeService } from 'src/app/services/theme/theme.service';
   templateUrl: './main-menu.page.html',
   styleUrls: ['./main-menu.page.scss'],
 })
-export class MainMenuPage implements OnInit {
+export class MainMenuPage {
   public selectedIndex = 0; // Current page
   title = MENU_TITLE;       // Title of menu
   note = MENU_NOTE;         // Note on menu
@@ -45,11 +45,4 @@ export class MainMenuPage implements OnInit {
   ];
 
   constructor(public themeService: ThemeService) { }
-
-  ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
-  }
 }
