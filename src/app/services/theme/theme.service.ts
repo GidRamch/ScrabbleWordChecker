@@ -15,7 +15,7 @@ export class ThemeService {
     private platform: Platform,
     private storage: StorageService,
   ) {
-    this.initialize();
+
   }
 
 
@@ -27,9 +27,7 @@ export class ThemeService {
     await this.platform.ready();
     const theme = await this.storage.get(THEME_KEY);
 
-    if (theme === DARK_ID) {
-      this.setDarkMode(true);
-    }
+    await this.setDarkMode(theme === DARK_ID);
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     prefersDark.addListener(e => {
