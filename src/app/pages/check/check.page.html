@@ -60,6 +60,12 @@
         offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
         <h1>Valid Scrabble words must be longer than 1 character!</h1>
       </ion-col>
+
+      <ion-col *ngIf="status === 'valid' && savedDefinition.length" size="12" size-sm="10"
+        offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
+        <h1>{{savedDefinition}}</h1>
+      </ion-col>
+      
     </ion-row>
   </ion-grid>
 </ion-content>

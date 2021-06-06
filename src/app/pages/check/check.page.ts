@@ -18,6 +18,7 @@ export class CheckPage implements OnInit {
   title = CHECK_TITLE;      // Title of page
   inputWord = '';           // Word entered by user
   savedInputWord = '';      // Word captured from input for checking
+  savedDefinition = '';
   status: Status = 'ready'; // Holds to stage of processing a word
 
 
@@ -38,6 +39,8 @@ export class CheckPage implements OnInit {
    * variable for displaying the appropriate message.
    */
   wordSubmitted(): void {
+    this.savedDefinition = '';
+
     try {
       this.savedInputWord = this.inputWord.trim();
       this.savedInputWord = this.savedInputWord.trim();
@@ -63,6 +66,7 @@ export class CheckPage implements OnInit {
       this.status = 'waiting';
       const lookUp = await this.http.get(`/assets/json/${word[0]}.json`).pipe(map(res => res[word])).toPromise();
       if (lookUp) {
+        this.savedDefinition = lookUp;
         this.status = 'valid';
         this.animService.scaleBounce(document.querySelector('#check_image'));
       } else {
