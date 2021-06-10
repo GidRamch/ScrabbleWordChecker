@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainMenuPage } from './main-menu.page';
-import { MENU_ROUTE, CHECK_ROUTE, ABOUT_ROUTE, DONATE_ROUTE } from 'src/app/core/strings';
+import { MENU_ROUTE, CHECK_ROUTE, ABOUT_ROUTE, DONATE_ROUTE, FINDER_ROUTE } from 'src/app/core/strings';
 
 const routes: Routes = [
   {
@@ -11,6 +11,10 @@ const routes: Routes = [
       {
         path: CHECK_ROUTE,
         loadChildren: () => import('../check/check.module').then(m => m.CheckPageModule),
+      },
+      {
+        path: FINDER_ROUTE,
+        loadChildren: () => import('../finder/finder.module').then(m => m.FinderPageModule)
       },
       {
         path: ABOUT_ROUTE,

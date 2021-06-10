@@ -71,6 +71,7 @@ export class CheckPage implements OnInit, ViewDidEnter {
   /**
    * Checks the inputted word validity, by checking the appropriate JSON file,
    * then updates the status variable as required.
+   *
    * @param word the inputted word
    */
   async checkWord(word: string): Promise<void> {
@@ -95,6 +96,7 @@ export class CheckPage implements OnInit, ViewDidEnter {
 
   /**
    * Handles any errors that occur during checking a word.
+   *
    * @param error The error to be handled
    */
   async handleInputError(error: Error): Promise<void> {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   CHECK_ROUTE,
   ABOUT_ROUTE,
@@ -8,9 +8,10 @@ import {
   ABOUT_TITLE,
   DONATE_TITLE,
   MENU_TITLE,
-  MENU_NOTE
+  MENU_NOTE,
+  FINDER_TITLE,
+  FINDER_ROUTE
 } from 'src/app/core/strings';
-import { AdService } from 'src/app/services/ad/ad.service';
 import { ThemeService } from 'src/app/services/theme/theme.service';
 
 @Component({
@@ -28,6 +29,10 @@ export class MainMenuPage {
       title: CHECK_TITLE,
       url: `/${MENU_ROUTE}/${CHECK_ROUTE}`,
       icon: 'checkmark-circle'
+    }, {
+      title: FINDER_TITLE,
+      url: `/${MENU_ROUTE}/${FINDER_ROUTE}`,
+      icon: 'search-circle'
     }, {
       title: ABOUT_TITLE,
       url: `/${MENU_ROUTE}/${ABOUT_ROUTE}`,
