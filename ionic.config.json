@@ -1,0 +1,8 @@
+{
+  "name": "Offline Scrabble Checker",
+  "integrations": {
+    "capacitor": {
+    }
+  },
+  "type": "angular"
+}

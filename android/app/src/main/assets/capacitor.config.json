@@ -1,0 +1,16 @@
+{
+	"appId": "com.gidschwifty.offlinescrabblechecker",
+	"appName": "Offline Scrabble Checker",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"android": {},
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": false,
+			"showSpinner": false,
+			"androidScaleType": "CENTER_CROP",
+			"splashFullScreen": true,
+			"backgroundColor": "#131313"
+		}
+	}
+}
