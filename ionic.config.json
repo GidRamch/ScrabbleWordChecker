@@ -1,7 +1,0 @@
-{
-  "name": "ScrabbleWordCheck",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
