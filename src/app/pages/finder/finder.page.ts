@@ -19,6 +19,8 @@ export class FinderPage implements OnInit {
   public title = FINDER_TITLE;
   public status: Status = 'ready'; // Holds to stage of processing a word
 
+  public wordGroups: Record<number, string[]>;
+
 
   constructor(
     private loadingService: LoadingService,
@@ -33,14 +35,20 @@ export class FinderPage implements OnInit {
 
   public async lettersSubmitted(): Promise<void> {
     try {
+      this.status = 'waiting';
+      this.wordGroups = null;
       this.inputLetters = this.inputLetters.replace(/[^A-Za-z]/g, '').toLowerCase();
+
+      if (this.inputLetters.length < 2) {
+        throw Error('input letters to short');
+      }
 
       await this.loadingService.present('Finding words, this will only take a moment...');
 
       await this.findWords(this.inputLetters.split(''));
 
     } catch (err) {
-
+      this.handleInputError(err);
     } finally {
       this.loadingService.dismiss();
     }
@@ -51,7 +59,12 @@ export class FinderPage implements OnInit {
     const invertedAlphabet = this.getInvertedAlphabet(this.alphabet, inputLetters);
     const [uniqueInputLetters, uniqueInputLetterCount] = this.getUniqueLettersAndCount(inputLetters);
     const validWords = await this.getValidWords(invertedAlphabet, uniqueInputLetters, uniqueInputLetterCount);
-    console.log(validWords);
+    this.wordGroups = this.generateWordGroups(validWords);
+    if (validWords?.length) {
+      this.status = 'valid';
+    } else {
+      throw Error('no words found');
+    }
   }
 
 
@@ -136,6 +149,24 @@ export class FinderPage implements OnInit {
         }
       }
     }
+  }
+
+
+  private generateWordGroups(words: string[]): Record<number, string[]> {
+    const wordGroups: Record<number, string[]> = {};
+
+    words.sort((a, b) => {
+      if (a > b) { return -1; };
+      if (a < b) { return 1; };
+      return 0;
+    });
+
+    for (const word of words) {
+      if (!wordGroups[word.length]) { wordGroups[word.length] = [word]; }
+      else { wordGroups[word.length].push(word); }
+    }
+
+    return wordGroups;
   }
 
 

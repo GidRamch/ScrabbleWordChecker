@@ -14,7 +14,8 @@
       <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
         <ion-item>
           <ion-label position="floating">Enter up to 10 letters from your rack!</ion-label>
-          <ion-input clearInput type="text" [(ngModel)]="inputLetters" (keyup.enter)="lettersSubmitted()" maxlength="10">
+          <ion-input clearInput type="text" [(ngModel)]="inputLetters" (keyup.enter)="lettersSubmitted()"
+            maxlength="10">
           </ion-input>
         </ion-item>
       </ion-col>
@@ -34,7 +35,37 @@
       <ion-col *ngIf="status === 'ready'" size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6"
         offset-xl="3">
         <h1>Enter your letters in the area provided, then click the FIND WORDS button!</h1>
-        <div class="info-text">This features is meant to be used for educational purposes. It is considered CHEATING if this feature is used during a game.</div>
+        <div class="info-text">This features is meant to be used for educational purposes. It is considered CHEATING if
+          this feature is used during a game.</div>
+      </ion-col>
+
+      <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
+        <div *ngFor="let num of [10,9,8,7,6,5,4,3,2,1]" class="lists-container">
+          <ng-container *ngIf="wordGroups && wordGroups[num]?.length">
+            <h1>{{num}} letter words ({{wordGroups[num].length}}): </h1>
+
+            <ion-list class="word-list" lines="none">
+              <ion-item *ngFor="let word of wordGroups[num]; let i = index;" lines="none">{{(i+1)}}. {{word |
+                uppercase}}</ion-item>
+            </ion-list>
+            <ion-item lines="none" *ngIf="wordGroups[num].length > 4">Scroll for more {{num}} letter words.</ion-item>
+
+          </ng-container>
+        </div>
+      </ion-col>
+
+      <ion-col [hidden]="status !== 'invalid'" size="6" offset="3" size-md="4" offset-md="4" size-xl="2" offset-xl="5">
+        <img src="/assets/img/x.png" id="x_image" />
+      </ion-col>
+
+      <ion-col *ngIf="status === 'invalid' && (!inputLetters || inputLetters.length < 2)" size="12" size-sm="10"
+        offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
+        <h1>Valid Scrabble words must be longer than 1 character!</h1>
+      </ion-col>
+
+      <ion-col *ngIf="status === 'invalid'  && inputLetters?.length > 1" size="12" size-sm="10" offset-sm="1" size-md="8"
+        offset-md="2" size-xl="6" offset-xl="3">
+        <h1>No words found for given character(s): {{inputLetters}}</h1>
       </ion-col>
 
     </ion-row>
