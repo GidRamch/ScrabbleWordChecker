@@ -6,6 +6,7 @@ export const DONATE_ROUTE = 'donate';
 
 // Names of menu pages
 export const CHECK_TITLE = 'Check Words';
+export const FINDER_TITLE = 'Word Finder';
 export const DONATE_TITLE = 'Donate';
 export const ABOUT_TITLE = 'About';
 export const MENU_TITLE = 'Scrabble Tools';
