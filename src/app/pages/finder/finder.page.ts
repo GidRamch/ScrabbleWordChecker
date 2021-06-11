@@ -16,10 +16,13 @@ export class FinderPage implements OnInit {
   public alphabet =
     ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   public inputLetters = '';           // Letters entered by user
+  public displayLetters = '';         // Letters saved for display purposes
   public title = FINDER_TITLE;
   public status: Status = 'ready'; // Holds to stage of processing a word
 
   public wordGroups: Record<number, string[]>;
+  public allWordGroups: Record<number, string[]>;
+  private wordGroupOffsets: Record<number, number>;
 
 
   constructor(
@@ -38,6 +41,7 @@ export class FinderPage implements OnInit {
       this.status = 'waiting';
       this.wordGroups = null;
       this.inputLetters = this.inputLetters.replace(/[^A-Za-z]/g, '').toLowerCase();
+      this.displayLetters = this.inputLetters;
 
       if (this.inputLetters.length < 2) {
         throw Error('input letters to short');
@@ -55,16 +59,44 @@ export class FinderPage implements OnInit {
   }
 
 
+  public loadData(event, group): void {
+    setTimeout(() => {
+      this.wordGroupOffsets[group]++;
+
+      const startIndex = this.wordGroupOffsets[group] * 20;
+
+      Array.prototype.push.apply(this.wordGroups[group], this.allWordGroups[group].slice(startIndex, startIndex + 20));
+
+      event.target.complete();
+
+    }, 100);
+  }
+
+
   private async findWords(inputLetters: string[]): Promise<void> {
+    const a = performance.now();
+
     const invertedAlphabet = this.getInvertedAlphabet(this.alphabet, inputLetters);
     const [uniqueInputLetters, uniqueInputLetterCount] = this.getUniqueLettersAndCount(inputLetters);
-    const validWords = await this.getValidWords(invertedAlphabet, uniqueInputLetters, uniqueInputLetterCount);
-    this.wordGroups = this.generateWordGroups(validWords);
-    if (validWords?.length) {
-      this.status = 'valid';
-    } else {
+    const validWords = [];
+    await this.getValidWords(invertedAlphabet, uniqueInputLetters, uniqueInputLetterCount, inputLetters.length, validWords);
+
+    if (!validWords?.length) {
       throw Error('no words found');
     }
+
+    [
+      this.allWordGroups,
+      this.wordGroups,
+      this.wordGroupOffsets
+    ] = await this.generateWordGroups(validWords);
+
+    const b = performance.now();
+
+    console.log(`Time to complete: ${b - a}`);
+
+    this.status = 'valid';
+
   }
 
 
@@ -104,69 +136,44 @@ export class FinderPage implements OnInit {
     invertedAlphabet: string[],
     uniqueInputLetters: string[],
     uniqueInputLetterCount: Record<string, number>,
-  ): Promise<string[]> {
-    let validWords: string[] = [];
+    inputLength: number,
+    validWords: string[],
+  ): Promise<void> {
+    // const validWords: string[] = [];
 
     for (const uniqueInputLetter of uniqueInputLetters) {
-      const dictionary: Record<string, string> =
+      let dictionary: Record<string, string> =
+
         await this.httpService.get<Record<string, string>>(`/assets/json/${uniqueInputLetter}.json`)
           .toPromise<Record<string, string>>();
 
-      for (const unwantedLetter of invertedAlphabet) {
 
-        if (unwantedLetter === uniqueInputLetter) { continue; }
+      dictionary = await new Promise((resolve, reject) => {
+        const webWorker = new Worker('./assets/workers/remove-unwanted-words.js');
+        webWorker.postMessage({ invertedAlphabet, uniqueInputLetterCount, dictionary, uniqueInputLetter, inputLength });
 
-        this.removeUnwantedWordsFromDictionary(unwantedLetter, uniqueInputLetterCount, dictionary);
-
-        if (Object.keys(dictionary).length === 0) { break; }
-      }
-
-      validWords = [...validWords, ...Object.keys(dictionary)];
+        webWorker.onmessage = (event) => {
+          resolve(event.data);
+        };
+      });
+      Array.prototype.push.apply(validWords, Object.keys(dictionary));
     }
 
-    return validWords;
+    // return validWords;
   }
 
 
-  private removeUnwantedWordsFromDictionary(
-    unwantedLetter: string,
-    uniqueInputLetterCount: Record<string, number>,
-    dictionary: Record<string, string>,
-  ): void {
-    for (const word in dictionary) {
-      if (word.includes(unwantedLetter) || word.length > 10) {
-        delete dictionary[word];
-      } else {
-        const [_, uniqueWordLetterCount] = this.getUniqueLettersAndCount(word);
+  private generateWordGroups(words: string[]): Promise<[Record<number, string[]>, Record<number, string[]>, Record<number, number>]> {
 
-        // Delete word if letter counts exceed that of input letters
+    return new Promise((resolve, reject) => {
+      const webWorker = new Worker('./assets/workers/generate-word-groups.js');
+      webWorker.postMessage({ words });
 
-        for (const letter in uniqueWordLetterCount) {
-          if (uniqueWordLetterCount[letter] > uniqueInputLetterCount[letter]) {
-            delete dictionary[word];
-            break;
-          }
-        }
-      }
-    }
-  }
-
-
-  private generateWordGroups(words: string[]): Record<number, string[]> {
-    const wordGroups: Record<number, string[]> = {};
-
-    words.sort((a, b) => {
-      if (a > b) { return -1; };
-      if (a < b) { return 1; };
-      return 0;
+      webWorker.onmessage = (event) => {
+        resolve(event.data);
+      };
     });
 
-    for (const word of words) {
-      if (!wordGroups[word.length]) { wordGroups[word.length] = [word]; }
-      else { wordGroups[word.length].push(word); }
-    }
-
-    return wordGroups;
   }
 
 
@@ -180,5 +187,4 @@ export class FinderPage implements OnInit {
     this.status = 'invalid';
     this.animService.scaleBounce(document.querySelector('#x_image'));
   }
-
 }

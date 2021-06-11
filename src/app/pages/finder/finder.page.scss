@@ -15,7 +15,7 @@ h1, h2, h4 {
   flex-direction: column;
 }
 
-.word-list {
-  max-height: 200px;
+.word-list-large {
+  min-height: 210px;
   overflow-y: auto;
 }

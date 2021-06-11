@@ -42,13 +42,21 @@
       <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
         <div *ngFor="let num of [10,9,8,7,6,5,4,3,2,1]" class="lists-container">
           <ng-container *ngIf="wordGroups && wordGroups[num]?.length">
-            <h1>{{num}} letter words ({{wordGroups[num].length}}): </h1>
+            <h1>{{num}} letter words ({{allWordGroups[num].length}}): </h1>
 
-            <ion-list class="word-list" lines="none">
-              <ion-item *ngFor="let word of wordGroups[num]; let i = index;" lines="none">{{(i+1)}}. {{word |
-                uppercase}}</ion-item>
-            </ion-list>
-            <ion-item lines="none" *ngIf="wordGroups[num].length > 4">Scroll for more {{num}} letter words.</ion-item>
+            <ion-content class="word-list-large">
+              <ion-list lines="none">
+                <ion-item *ngFor="let word of wordGroups[num]; let i = index;" lines="none">{{(i+1)}}. {{word |
+                  uppercase}}</ion-item>
+              </ion-list>
+              <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, num)">
+                <ion-infinite-scroll-content
+                  loadingSpinner="bubbles"
+                  loadingText="Loading more words...">
+                </ion-infinite-scroll-content>
+              </ion-infinite-scroll>
+            </ion-content>
+            <ion-item lines="none" *ngIf="allWordGroups[num].length > 4">Scroll for more {{num}} letter words.</ion-item>
 
           </ng-container>
         </div>
@@ -58,14 +66,14 @@
         <img src="/assets/img/x.png" id="x_image" />
       </ion-col>
 
-      <ion-col *ngIf="status === 'invalid' && (!inputLetters || inputLetters.length < 2)" size="12" size-sm="10"
+      <ion-col *ngIf="status === 'invalid' && (!displayLetters || displayLetters.length < 2)" size="12" size-sm="10"
         offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
         <h1>Valid Scrabble words must be longer than 1 character!</h1>
       </ion-col>
 
-      <ion-col *ngIf="status === 'invalid'  && inputLetters?.length > 1" size="12" size-sm="10" offset-sm="1" size-md="8"
+      <ion-col *ngIf="status === 'invalid'  && displayLetters?.length > 1" size="12" size-sm="10" offset-sm="1" size-md="8"
         offset-md="2" size-xl="6" offset-xl="3">
-        <h1>No words found for given character(s): {{inputLetters}}</h1>
+        <h1>No words found for given character(s): {{displayLetters}}</h1>
       </ion-col>
 
     </ion-row>
