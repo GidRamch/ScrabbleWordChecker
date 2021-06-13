@@ -11,6 +11,7 @@ export class ToastService {
 
   /**
    * Creates and displays a toast message with the specified parameters
+   *
    * @param message message to be displayed
    * @param color color of message
    * @param position position of message on device screen
