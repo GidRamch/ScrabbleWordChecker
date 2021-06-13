@@ -4,6 +4,12 @@
       <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
     <ion-title>{{title}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openInfo(true)">
+        <ion-icon slot="icon-only" name="warning"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -35,8 +41,7 @@
       <ion-col *ngIf="status === 'ready'" size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6"
         offset-xl="3">
         <h1>Enter your letters in the area provided, then click the FIND WORDS button!</h1>
-        <div class="info-text">This features is meant to be used for educational purposes. It is considered CHEATING if
-          this feature is used during a game.</div>
+        <div class="info-text">This features is meant to be used for educational purposes. It is considered CHEATING if used during a game.</div>
       </ion-col>
 
       <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">

@@ -1,0 +1,24 @@
+<ion-toolbar color="statusbar">
+  <ion-title>Important!</ion-title>
+  <ion-buttons slot="end">
+    <ion-button (click)='dismissPopover()'>
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+
+<ion-content padding>
+  <p>
+    This is an experimental feature and may perform slowly on some devices.
+    <br>
+    <br>
+    <b><i>Results may take as long as 30 to 45 seconds to process.</i></b>
+    <br>
+    <br>
+
+    <ion-button expand="full" color="primary"
+      fill="outline" shape="round" size="large" (click)='dismissPopover(true)'>Don't show again!
+    </ion-button>
+  </p>
+</ion-content>

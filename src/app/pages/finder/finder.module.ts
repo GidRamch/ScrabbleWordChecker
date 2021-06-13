@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { FinderPageRoutingModule } from './finder-routing.module';
 
 import { FinderPage } from './finder.page';
+import { FinderNoteComponent } from 'src/app/components/finder-note/finder-note.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { FinderPage } from './finder.page';
     IonicModule,
     FinderPageRoutingModule
   ],
-  declarations: [FinderPage]
+  declarations: [FinderPage, FinderNoteComponent,]
 })
-export class FinderPageModule {}
+export class FinderPageModule { }

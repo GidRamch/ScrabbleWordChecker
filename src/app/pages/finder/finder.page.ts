@@ -6,9 +6,15 @@ import { LoadingService } from 'src/app/services/loading/loading.service';
 import { DatabaseService } from 'src/app/services/database/database.service';
 import { AdService } from 'src/app/services/ad/ad.service';
 import { environment } from 'src/environments/environment';
+import { PopoverController } from '@ionic/angular';
+import { FinderNoteComponent } from 'src/app/components/finder-note/finder-note.component';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 
 type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
+
+
+const DONT_SHOW_FINDER_INFO_KEY = 'dont-show-finder-info';
 
 @Component({
   selector: 'app-finder',
@@ -36,11 +42,35 @@ export class FinderPage implements OnInit {
     private animService: AnimationService,
     private databaseService: DatabaseService,
     private adService: AdService,
+    private popoverCtrl: PopoverController,
+    private storageService: StorageService,
   ) { }
 
   ngOnInit() {
     this.adService.showBannerAd(environment.bannerAds.finderBannerId);
     this.animService.scaleBounce(document.querySelector('#find_image'));
+    this.openInfo();
+  }
+
+
+  /**
+   * Opens the info popover
+   */
+  public async openInfo(forceShow = false): Promise<void> {
+    if (!forceShow && await this.storageService.get(DONT_SHOW_FINDER_INFO_KEY)) { return; }
+
+    const popover = await this.popoverCtrl.create({
+      component: FinderNoteComponent,
+      cssClass: 'info-modal',
+    });
+
+    await popover.present();
+
+    const result = await popover.onDidDismiss();
+
+    if (result.data) {
+      this.storageService.set(DONT_SHOW_FINDER_INFO_KEY, true);
+    }
   }
 
 
