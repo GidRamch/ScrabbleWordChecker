@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CapacitorSQLite } from '@capacitor-community/sqlite';
+import { App } from '@capacitor/app';
+import { AlertService } from '../alert/alert.service';
 import { LoadingService } from '../loading/loading.service';
 import { StorageService } from '../storage/storage.service';
 
@@ -16,11 +18,15 @@ export class DatabaseService {
   constructor(
     private storageService: StorageService,
     private loadingService: LoadingService,
+    private alertService: AlertService,
   ) { }
 
 
   public async checkDefinitionsDbUpdated(): Promise<void> {
-    if ((await this.storageService.get(DEFINITION_DB_VERSION_STORAGE_KEY)) === DEFINITION_DB_VERSION) { return; }
+    if (
+      (await this.storageService.get(DEFINITION_DB_VERSION_STORAGE_KEY)) === DEFINITION_DB_VERSION
+      && await this.isDatabase('definitions-large')
+    ) { return; }
 
     let loading: HTMLIonLoadingElement;
 
@@ -30,10 +36,16 @@ export class DatabaseService {
       await CapacitorSQLite.copyFromAssets();
       await this.storageService.set(DEFINITION_DB_VERSION_STORAGE_KEY, DEFINITION_DB_VERSION);
 
+      if (loading) { loading.dismiss(); }
     } catch (err) {
       console.error(err);
-    } finally {
       if (loading) { loading.dismiss(); }
+      await this.alertService.force(
+        'There was an problem updating the definitions database.',
+        'Please restart the application to try again!',
+        'You may also try clearing the app data.'
+      );
+      App.exitApp();
     }
   }
 
@@ -60,6 +72,16 @@ export class DatabaseService {
         }
       )).values
     );
+  }
+
+
+  private async isDatabase(database: DatabaseName): Promise<boolean> {
+    try {
+      return (await CapacitorSQLite.isDatabase({ database })).result;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
   }
 
 
