@@ -3,6 +3,7 @@ import { ThemeService } from './services/theme/theme.service';
 import { AdMob } from '@capacitor-community/admob';
 import { App } from '@capacitor/app';
 import { ToastService } from './services/toast/toast.service';
+import { DatabaseService } from './services/database/database.service';
 
 @Component({
   selector: 'app-root',
@@ -16,33 +17,37 @@ export class AppComponent implements AfterViewInit, OnInit {
   constructor(
     private themeService: ThemeService,
     private toastService: ToastService,
+    private databaseService: DatabaseService,
   ) { }
 
   ngOnInit(): void {
     this.initialize();
   }
 
+
+  public async ngAfterViewInit() {
+    await this.themeService.initialize();
+  }
+
+
   private async initialize(): Promise<void> {
     App.addListener('backButton', () => {
       this.backButtonTapCount++;
-      
+
       if (this.backButtonTapCount === 2) {
         App.exitApp();
       } else {
         this.toastService.presentToast('Tap back button again to exit!', true, 'middle', undefined, 2000);
-        setTimeout(()=>this.backButtonTapCount = 0, 1900);
+        setTimeout(() => this.backButtonTapCount = 0, 1900);
       }
     });
-
 
     AdMob.initialize({
       requestTrackingAuthorization: true,
       initializeForTesting: true,
     });
 
+    this.databaseService.checkDefinitionsDbUpdated();
   }
 
-  async ngAfterViewInit() {
-    await this.themeService.initialize();
-  }
 }

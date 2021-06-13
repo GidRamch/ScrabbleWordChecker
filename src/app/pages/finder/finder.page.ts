@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+/* eslint-disable guard-for-in */
 import { Component, OnInit } from '@angular/core';
 import { FINDER_TITLE } from 'src/app/core/strings';
 import { AnimationService } from 'src/app/services/animation/animation.service';
 import { LoadingService } from 'src/app/services/loading/loading.service';
+import { DatabaseService } from 'src/app/services/database/database.service';
+
 
 type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
 
@@ -13,8 +15,10 @@ type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
 })
 export class FinderPage implements OnInit {
 
-  public alphabet =
-    ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  public alphabet = [
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+  ];
   public inputLetters = '';           // Letters entered by user
   public displayLetters = '';         // Letters saved for display purposes
   public title = FINDER_TITLE;
@@ -28,7 +32,7 @@ export class FinderPage implements OnInit {
   constructor(
     private loadingService: LoadingService,
     private animService: AnimationService,
-    private httpService: HttpClient,
+    private databaseService: DatabaseService,
   ) { }
 
   ngOnInit() {
@@ -37,7 +41,11 @@ export class FinderPage implements OnInit {
 
 
   public async lettersSubmitted(): Promise<void> {
+    let loading: HTMLIonLoadingElement;
+
     try {
+      loading = await this.loadingService.present('Finding words, this may take a while (30 seconds for 10 letters)...');
+
       this.status = 'waiting';
       this.wordGroups = null;
       this.inputLetters = this.inputLetters.replace(/[^A-Za-z]/g, '').toLowerCase();
@@ -47,14 +55,12 @@ export class FinderPage implements OnInit {
         throw Error('input letters to short');
       }
 
-      await this.loadingService.present('Finding words, this will only take a moment...');
-
-      await this.findWords(this.inputLetters.split(''));
+      await this.findWords(this.inputLetters);
 
     } catch (err) {
       this.handleInputError(err);
     } finally {
-      this.loadingService.dismiss();
+      if (loading) { loading.dismiss(); }
     }
   }
 
@@ -73,108 +79,64 @@ export class FinderPage implements OnInit {
   }
 
 
-  private async findWords(inputLetters: string[]): Promise<void> {
-    const a = performance.now();
+  private async findWords(inputLetters: string): Promise<void> {
+    this.allWordGroups = {};
+    this.wordGroups = {};
+    this.wordGroupOffsets = {};
 
-    const invertedAlphabet = this.getInvertedAlphabet(this.alphabet, inputLetters);
-    const [uniqueInputLetters, uniqueInputLetterCount] = this.getUniqueLettersAndCount(inputLetters);
-    const validWords = [];
-    await this.getValidWords(invertedAlphabet, uniqueInputLetters, uniqueInputLetterCount, inputLetters.length, validWords);
+    const queryString = this.generateSelectQuery(inputLetters);
 
-    if (!validWords?.length) {
-      throw Error('no words found');
+    (await this.databaseService.executeQuery(queryString, 'definitions-large'))
+      .forEach(word => {
+        console.log(word);
+        if (this.allWordGroups[word.term.length]) {
+          this.allWordGroups[word.term.length].push(word.term);
+        } else {
+          this.allWordGroups[word.term.length] = [word.term];
+        }
+      });
+
+    for (const group in this.allWordGroups) {
+      this.wordGroups[group] = this.allWordGroups[group].slice(0, 20);
+      this.wordGroupOffsets[group] = 0;
     }
-
-    [
-      this.allWordGroups,
-      this.wordGroups,
-      this.wordGroupOffsets
-    ] = await this.generateWordGroups(validWords);
-
-    const b = performance.now();
-
-    console.log(`Time to complete: ${b - a}`);
-
-    this.status = 'valid';
-
   }
 
 
-  private getInvertedAlphabet(alphabet: string[], inputLetters: string[]): string[] {
-    const invertedAlphabet = [...alphabet];
+  private generateSelectQuery(letters: string): string {
+    let queryString = '';
+    const lettersCounts = this.getCharacterCount(letters);
 
-    for (const letter of inputLetters) {
-      const letterIndex = invertedAlphabet.indexOf(letter);
+    for (const letter in lettersCounts) {
+      queryString = `${queryString} AND\n(LENGTH(term) - LENGTH(REPLACE(term, '${letter}', ''))) <= ${lettersCounts[letter]}`;
+    }
 
-      if (letterIndex !== -1) {
-        invertedAlphabet.splice(letterIndex, 1);
+    queryString = `SELECT term FROM definitions\nWHERE\n${queryString.substr(5, queryString.length)}`;
+
+    for (const aLetter of this.alphabet) {
+      if (!lettersCounts[aLetter]) {
+        queryString = `${queryString} AND\n INSTR(term, '${aLetter}') = 0`;
       }
     }
 
-    return invertedAlphabet;
+    return `${queryString}\n ORDER BY LENGTH(term) DESC;`;
   }
 
 
-  private getUniqueLettersAndCount(inputLetters: string[] | string): [string[], Record<string, number>] {
-    const uniqueLetters: string[] = [];
-    const letterCounts: Record<string, number> = {};
+  private getCharacterCount(letters: string) {
+    const uniqueLettersArray = [];
+    const letterCounts = {};
 
-    for (const letter of inputLetters) {
-      if (uniqueLetters.indexOf(letter) === -1) {
-        uniqueLetters.push(letter);
+    for (const letter of letters) {
+      if (uniqueLettersArray.indexOf(letter) === -1) {
+        uniqueLettersArray.push(letter);
         letterCounts[letter] = 1;
       } else {
         letterCounts[letter]++;
       }
     }
-
-    return [uniqueLetters, letterCounts];
-  }
-
-
-  private async getValidWords(
-    invertedAlphabet: string[],
-    uniqueInputLetters: string[],
-    uniqueInputLetterCount: Record<string, number>,
-    inputLength: number,
-    validWords: string[],
-  ): Promise<void> {
-    // const validWords: string[] = [];
-
-    for (const uniqueInputLetter of uniqueInputLetters) {
-      let dictionary: Record<string, string> =
-
-        await this.httpService.get<Record<string, string>>(`/assets/json/${uniqueInputLetter}.json`)
-          .toPromise<Record<string, string>>();
-
-
-      dictionary = await new Promise((resolve, reject) => {
-        const webWorker = new Worker('./assets/workers/remove-unwanted-words.js');
-        webWorker.postMessage({ invertedAlphabet, uniqueInputLetterCount, dictionary, uniqueInputLetter, inputLength });
-
-        webWorker.onmessage = (event) => {
-          resolve(event.data);
-        };
-      });
-      Array.prototype.push.apply(validWords, Object.keys(dictionary));
-    }
-
-    // return validWords;
-  }
-
-
-  private generateWordGroups(words: string[]): Promise<[Record<number, string[]>, Record<number, string[]>, Record<number, number>]> {
-
-    return new Promise((resolve, reject) => {
-      const webWorker = new Worker('./assets/workers/generate-word-groups.js');
-      webWorker.postMessage({ words });
-
-      webWorker.onmessage = (event) => {
-        resolve(event.data);
-      };
-    });
-
-  }
+    return letterCounts;
+  };
 
 
   /**

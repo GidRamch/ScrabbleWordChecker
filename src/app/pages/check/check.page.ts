@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CHECK_TITLE } from 'src/app/core/strings';
-import { HttpClient } from '@angular/common/http';
 import { LoadingService } from 'src/app/services/loading/loading.service';
-import { map } from 'rxjs/operators';
 import { PopoverController, ViewDidEnter } from '@ionic/angular';
 import { InfoComponent } from 'src/app/components/info/info.component';
 import { AnimationService } from 'src/app/services/animation/animation.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { AdService } from 'src/app/services/ad/ad.service';
 import { environment } from 'src/environments/environment';
+import { DatabaseService } from 'src/app/services/database/database.service';
 
 
 type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
@@ -27,11 +26,11 @@ export class CheckPage implements OnInit, ViewDidEnter {
 
 
   constructor(
-    private http: HttpClient,
     private loading: LoadingService,
     private popoverCtrl: PopoverController,
     private animService: AnimationService,
     private adService: AdService,
+    private databaseService: DatabaseService,
   ) { }
 
   ngOnInit() {
@@ -75,10 +74,16 @@ export class CheckPage implements OnInit, ViewDidEnter {
    * @param word the inputted word
    */
   async checkWord(word: string): Promise<void> {
+    let loading: HTMLIonLoadingElement;
+
     try {
-      await this.loading.present(`Hang on! Checking "${this.inputWord}"...`);
+      loading = await this.loading.present(`Hang on! Checking "${word}"...`);
       this.status = 'waiting';
-      const lookUp = await this.http.get(`/assets/json/${word[0]}.json`).pipe(map(res => res[word])).toPromise();
+      const lookUp = (await this.databaseService.executeQuery(
+        `SELECT definition FROM definitions WHERE term="${word}";`,
+        'definitions-large'
+      ))[0].definition;
+
       if (lookUp) {
         this.savedDefinition = lookUp;
         this.status = 'valid';
@@ -87,9 +92,10 @@ export class CheckPage implements OnInit, ViewDidEnter {
         this.status = 'invalid';
         this.animService.scaleBounce(document.querySelector('#x_image'));
       }
-      await this.loading.dismiss();
     } catch (error) {
       this.handleInputError(error);
+    } finally {
+      if (loading) { loading.dismiss(); }
     }
   }
 
@@ -100,7 +106,6 @@ export class CheckPage implements OnInit, ViewDidEnter {
    * @param error The error to be handled
    */
   async handleInputError(error: Error): Promise<void> {
-    await this.loading.dismiss();
     console.error(error);
     this.status = 'invalid';
     this.animService.scaleBounce(document.querySelector('#x_image'));

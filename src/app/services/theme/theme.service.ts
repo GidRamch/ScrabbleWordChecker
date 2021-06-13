@@ -27,7 +27,7 @@ export class ThemeService {
     await this.setDarkMode(theme === DARK_ID);
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    prefersDark.addEventListener("change", e => {
+    prefersDark.addEventListener('change', e => {
       console.log('matches: ', e);
       this.setDarkMode(e.matches);
     });
@@ -36,6 +36,7 @@ export class ThemeService {
 
   /**
    * Sets dark mode on or off based on isDark value
+   *
    * @param isDark - whether or not to set dark mode on
    */
   async setDarkMode(isDark: boolean): Promise<void> {
