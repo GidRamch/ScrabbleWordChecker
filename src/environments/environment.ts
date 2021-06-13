@@ -12,7 +12,8 @@ export const environment = {
   bannerAds: {
     aboutBannerId: 'ca-app-pub-3940256099942544/6300978111',
     checkBannerId: 'ca-app-pub-3940256099942544/6300978111',
-    donateBannerId: 'ca-app-pub-3940256099942544/6300978111'
+    donateBannerId: 'ca-app-pub-3940256099942544/6300978111',
+    finderBannerId: 'ca-app-pub-1957586325602739/6300978111'
   },
 };
 

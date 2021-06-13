@@ -4,6 +4,8 @@ import { FINDER_TITLE } from 'src/app/core/strings';
 import { AnimationService } from 'src/app/services/animation/animation.service';
 import { LoadingService } from 'src/app/services/loading/loading.service';
 import { DatabaseService } from 'src/app/services/database/database.service';
+import { AdService } from 'src/app/services/ad/ad.service';
+import { environment } from 'src/environments/environment';
 
 
 type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
@@ -33,9 +35,11 @@ export class FinderPage implements OnInit {
     private loadingService: LoadingService,
     private animService: AnimationService,
     private databaseService: DatabaseService,
+    private adService: AdService,
   ) { }
 
   ngOnInit() {
+    this.adService.showBannerAd(environment.bannerAds.finderBannerId);
     this.animService.scaleBounce(document.querySelector('#find_image'));
   }
 
