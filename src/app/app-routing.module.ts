@@ -8,10 +8,6 @@ const routes: Routes = [
     redirectTo: `/${MENU_ROUTE}/${CHECK_ROUTE}`,
     pathMatch: 'full'
   },
-  {
-    path: 'finder',
-    loadChildren: () => import('./pages/finder/finder.module').then( m => m.FinderPageModule)
-  },
 ];
 
 @NgModule({
