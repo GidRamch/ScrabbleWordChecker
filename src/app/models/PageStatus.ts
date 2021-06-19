@@ -1,0 +1,1 @@
+export type PageStatus = 'ready' | 'waiting' | 'invalid' | 'valid';

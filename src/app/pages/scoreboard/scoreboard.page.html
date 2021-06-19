@@ -1,0 +1,79 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="statusbar">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3" *ngIf="players?.length">
+
+        <ion-item>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let player of players">
+                <td>{{player.name}}</td>
+                <td (click)="scoreTapped(player.name, player.score)">{{player.score}}</td>
+                <td>
+                  <ion-button fill="clear" (click)="deletePlayer(player.name)">
+                    <ion-icon name="trash" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ion-item>
+
+      </ion-col>
+
+
+      <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
+        <ion-button id="checkButton" expand="full" color="primary" fill="outline" shape="round"
+          (click)="addPlayerTapped()" size="large">Add Player
+          <ion-icon name="add" slot="end"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
+        <ion-button id="checkButton" expand="full" color="primary" fill="outline" shape="round" (click)="clearPlayers()"
+          size="large">Clear Players
+          <ion-icon name="trash" slot="end"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
+        <ion-button id="checkButton" expand="full" color="primary" fill="outline" shape="round" (click)="resetScores()"
+          size="large">Reset Scores
+          <ion-icon name="refresh" slot="end"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col *ngIf="status === 'ready' && !players?.length" size="12" size-sm="10" offset-sm="1" size-md="8"
+        offset-md="2" size-xl="6" offset-xl="3">
+        <h1>Click the ADD PLAYER button to create a new player!</h1>
+      </ion-col>
+
+      <ion-col *ngIf="status === 'ready' && players?.length" size="12" size-sm="10" offset-sm="1" size-md="8"
+        offset-md="2" size-xl="6" offset-xl="3">
+        <h1>Tap the scores to edit! <br><br> You can enter a new score or add points to your current score!</h1>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+  <div style="height: 100px;">
+
+  </div>
+</ion-content>

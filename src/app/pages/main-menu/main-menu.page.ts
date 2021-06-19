@@ -10,7 +10,9 @@ import {
   MENU_TITLE,
   MENU_NOTE,
   FINDER_TITLE,
-  FINDER_ROUTE
+  FINDER_ROUTE,
+  SCORE_TITLE,
+  SCORE_ROUTE
 } from 'src/app/core/strings';
 import { ThemeService } from 'src/app/services/theme/theme.service';
 
@@ -29,6 +31,10 @@ export class MainMenuPage {
       title: CHECK_TITLE,
       url: `/${MENU_ROUTE}/${CHECK_ROUTE}`,
       icon: 'checkmark-circle'
+    }, {
+      title: SCORE_TITLE,
+      url: `/${MENU_ROUTE}/${SCORE_ROUTE}`,
+      icon: 'trophy'
     }, {
       title: FINDER_TITLE,
       url: `/${MENU_ROUTE}/${FINDER_ROUTE}`,
