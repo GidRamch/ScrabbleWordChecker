@@ -75,8 +75,10 @@ export class CheckPage implements OnInit, ViewDidEnter {
    * @param word the inputted word
    */
   async checkWord(word: string): Promise<void> {
+    let loading: HTMLIonLoadingElement;
+
     try {
-      await this.loading.present(`Hang on! Checking "${this.inputWord}"...`);
+      loading = await this.loading.present(`Hang on! Checking "${this.inputWord}"...`);
       this.status = 'waiting';
       const lookUp = await this.http.get(`/assets/json/${word[0]}.json`).pipe(map(res => res[word])).toPromise();
       if (lookUp) {
@@ -87,9 +89,10 @@ export class CheckPage implements OnInit, ViewDidEnter {
         this.status = 'invalid';
         this.animService.scaleBounce(document.querySelector('#x_image'));
       }
-      await this.loading.dismiss();
     } catch (error) {
       this.handleInputError(error);
+    } finally {
+      if (loading) { loading.dismiss(); }
     }
   }
 
@@ -100,7 +103,6 @@ export class CheckPage implements OnInit, ViewDidEnter {
    * @param error The error to be handled
    */
   async handleInputError(error: Error): Promise<void> {
-    await this.loading.dismiss();
     console.error(error);
     this.status = 'invalid';
     this.animService.scaleBounce(document.querySelector('#x_image'));

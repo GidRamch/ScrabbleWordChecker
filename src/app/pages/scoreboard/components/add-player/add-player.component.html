@@ -1,0 +1,24 @@
+<ion-toolbar color="statusbar">
+  <ion-title>Add Player</ion-title>
+  <ion-buttons slot="end">
+    <ion-button (click)='dismissPopover()'>
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-xl="6" offset-xl="3">
+        <ion-item>
+          <ion-label position="floating">Enter player name!</ion-label>
+          <ion-input clearInput type="text" [(ngModel)]="inputName" (keyup.enter)="nameSubmitted()">
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-button expand="full" color="primary" fill="outline" shape="round" size="large" (click)="nameSubmitted()">Save
+  </ion-button>
+</ion-content>

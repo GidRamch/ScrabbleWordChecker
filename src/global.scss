@@ -29,3 +29,21 @@
 .info-modal {
   --box-shadow: rgba(72, 151, 255, 0.363) 0px 8px 24px, rgba(23, 97, 255, 0.185) 0px 16px 56px, rgba(0, 29, 107, 0.1) 0px 24px 80px;
 }
+
+// LINE WORD SEPARATOR
+.separator {
+  display: flex;
+  align-items: center;
+  
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dddddd;
+  }
+  &::before {
+    margin-right: .25em;
+  }
+  &::after {
+    margin-left: .25em;
+  }
+}

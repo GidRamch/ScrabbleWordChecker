@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainMenuPage } from './main-menu.page';
-import { MENU_ROUTE, CHECK_ROUTE, ABOUT_ROUTE, DONATE_ROUTE } from 'src/app/core/strings';
+import { MENU_ROUTE, CHECK_ROUTE, ABOUT_ROUTE, DONATE_ROUTE, SCORE_ROUTE } from 'src/app/core/strings';
 
 const routes: Routes = [
   {
@@ -19,6 +19,10 @@ const routes: Routes = [
       {
         path: DONATE_ROUTE,
         loadChildren: () => import('../donate/donate.module').then(m => m.DonatePageModule)
+      },
+      {
+        path: SCORE_ROUTE,
+        loadChildren: () => import('../scoreboard/scoreboard.module').then(m => m.ScoreboardPageModule)
       },
       {
         path: '',
