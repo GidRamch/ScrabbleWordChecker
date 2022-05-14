@@ -3,10 +3,10 @@ import { Player } from 'src/app/models/Player';
 import { StorageService } from 'src/app/services/storage/storage.service';
 
 const SCRABBLE_PLAYERS_KEY = 'scrabble-players';
+const LAST_PLAYED_NAME_KEY = 'last-played-name-key';
 
 @Injectable()
 export class ScoreboardService {
-  public lastEditedPlayer: Player;
 
   constructor(
     private storage: StorageService,
@@ -44,9 +44,17 @@ export class ScoreboardService {
     return await this.storage.set(SCRABBLE_PLAYERS_KEY, players);
   }
 
+  public async getLastPlayedName(): Promise<string> {
+    return await this.storage.get(LAST_PLAYED_NAME_KEY) as string || '';
+  }
+
+  public async setLastPlayedName(playerName: string): Promise<void> {
+    return await this.storage.set(LAST_PLAYED_NAME_KEY, playerName);
+  }
+
   public async resetScores(): Promise<void> {
     const players = await this.getPlayers();
-    this.lastEditedPlayer = null;
+    this.setLastPlayedName(null);
     players.forEach(el => el.score = 0);
     this.setPlayers(players);
   }
@@ -56,7 +64,7 @@ export class ScoreboardService {
     players.forEach(el => {
       if (el.name === playerName) {
         el.score = score;
-        this.lastEditedPlayer = el;
+        this.setLastPlayedName(playerName);
       }
     });
     this.setPlayers(players);

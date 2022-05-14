@@ -19,6 +19,7 @@ import { ScoreboardService } from './scoreboard.service';
 export class ScoreboardPage implements OnInit {
 
   public players: Player[];
+  public lastPlayedName: string;
 
   public title = SCORE_TITLE; // Title of page;
   public status: PageStatus = 'ready';
@@ -43,6 +44,7 @@ export class ScoreboardPage implements OnInit {
     try {
       loading = await this.loadingService.present('Loading players...');
       this.players = await this.scoreboardService.getPlayers();
+      this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
     } catch (err) {
       console.error(err);
       this.alertService.error('There was a problem loading players. Please try again!');
@@ -64,6 +66,7 @@ export class ScoreboardPage implements OnInit {
     if (playerName?.length) {
       await this.scoreboardService.addPlayer(playerName);
       this.players = await this.scoreboardService.getPlayers();
+      this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
     }
   }
 
@@ -75,6 +78,7 @@ export class ScoreboardPage implements OnInit {
 
     await this.scoreboardService.setPlayers([]);
     this.players = await this.scoreboardService.getPlayers();
+    this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
   }
 
 
@@ -85,6 +89,7 @@ export class ScoreboardPage implements OnInit {
 
     await this.scoreboardService.resetScores();
     this.players = await this.scoreboardService.getPlayers();
+    this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
   }
 
   public async deletePlayer(name: string): Promise<void> {
@@ -94,6 +99,7 @@ export class ScoreboardPage implements OnInit {
 
     await this.scoreboardService.removePlayer(name);
     this.players = await this.scoreboardService.getPlayers();
+    this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
   }
 
   public async scoreChanged(e: any, playerName: string): Promise<void> {
@@ -117,5 +123,6 @@ export class ScoreboardPage implements OnInit {
 
     await this.scoreboardService.setScore(newScore, name);
     this.players = await this.scoreboardService.getPlayers();
+    this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
   }
 }
