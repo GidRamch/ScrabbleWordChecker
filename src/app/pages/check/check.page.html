@@ -47,6 +47,7 @@
         offset-xl="3">
         <h2>"{{savedInputWord}}" is a valid Scrabble word!</h2>
         <h2 *ngIf="savedDefinition">Definition: {{savedDefinition}}</h2>
+        <h2 *ngIf="inputWordPoints > 0">Points for word: {{inputWordPoints}}</h2>
       </ion-col>
 
       <ion-col [hidden]="status !== 'invalid'" size="6" offset="3" size-md="4" offset-md="4" size-xl="2" offset-xl="5">

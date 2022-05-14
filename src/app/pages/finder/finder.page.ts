@@ -120,15 +120,20 @@ export class FinderPage implements OnInit {
 
     const queryString = this.generateSelectQuery(inputLetters);
 
-    (await this.databaseService.executeQuery(queryString, 'definitions-large'))
-      .forEach(word => {
-        console.log(word);
-        if (this.allWordGroups[word.term.length]) {
-          this.allWordGroups[word.term.length].push(word.term);
-        } else {
-          this.allWordGroups[word.term.length] = [word.term];
-        }
-      });
+    const words = (await this.databaseService.executeQuery(queryString, 'definitions-large'))
+    
+    if (!words?.length) {
+      throw Error('No words found!');
+    }
+
+    words.forEach(word => {
+      console.log(word);
+      if (this.allWordGroups[word.term.length]) {
+        this.allWordGroups[word.term.length].push(word.term);
+      } else {
+        this.allWordGroups[word.term.length] = [word.term];
+      }
+    });
 
     for (const group in this.allWordGroups) {
       this.wordGroups[group] = this.allWordGroups[group].slice(0, 20);

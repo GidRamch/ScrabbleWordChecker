@@ -18,8 +18,18 @@ type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
   styleUrls: ['./check.page.scss'],
 })
 export class CheckPage implements OnInit, ViewDidEnter {
+  
+  public letterPoints = {
+    a: 1, b: 3, c: 3, d: 2, e: 1,
+    f: 4, g: 2, h: 4, i: 1, j: 8,
+    k: 5, l: 1, m: 3, n: 1, o: 1,
+    p: 3, q: 10, r: 1, s: 1, t: 1,
+    u: 1, v: 4, w: 4, x: 8, y: 4, z: 10,
+  };
+
   title = CHECK_TITLE;      // Title of page
   inputWord = '';           // Word entered by user
+  inputWordPoints: number;
   savedInputWord = '';      // Word captured from input for checking
   savedDefinition = '';
   status: Status = 'ready'; // Holds to stage of processing a word
@@ -52,6 +62,7 @@ export class CheckPage implements OnInit, ViewDidEnter {
    */
   wordSubmitted(): void {
     this.savedDefinition = '';
+    this.inputWordPoints = 0;
 
     try {
       this.savedInputWord = this.inputWord.trim();
@@ -86,6 +97,7 @@ export class CheckPage implements OnInit, ViewDidEnter {
 
       if (lookUp) {
         this.savedDefinition = lookUp;
+        this.inputWordPoints = this.calculatePoints(word);
         this.status = 'valid';
         this.animService.scaleBounce(document.querySelector('#check_image'));
       } else {
@@ -112,6 +124,17 @@ export class CheckPage implements OnInit, ViewDidEnter {
   }
 
 
+  private calculatePoints(word: string): number {
+    let points = 0;
+
+    for (let letter of word) {
+      points += this.letterPoints[letter] ?? 0;
+    }
+  
+    return points;
+  }
+
+  
   /**
    * Opens the info popover
    */
