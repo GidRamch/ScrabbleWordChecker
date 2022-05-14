@@ -6,6 +6,8 @@ const SCRABBLE_PLAYERS_KEY = 'scrabble-players';
 
 @Injectable()
 export class ScoreboardService {
+  public lastEditedPlayer: Player;
+
   constructor(
     private storage: StorageService,
   ) { }
@@ -44,6 +46,7 @@ export class ScoreboardService {
 
   public async resetScores(): Promise<void> {
     const players = await this.getPlayers();
+    this.lastEditedPlayer = null;
     players.forEach(el => el.score = 0);
     this.setPlayers(players);
   }
@@ -53,6 +56,7 @@ export class ScoreboardService {
     players.forEach(el => {
       if (el.name === playerName) {
         el.score = score;
+        this.lastEditedPlayer = el;
       }
     });
     this.setPlayers(players);

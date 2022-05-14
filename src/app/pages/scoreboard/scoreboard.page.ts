@@ -25,10 +25,10 @@ export class ScoreboardPage implements OnInit {
 
 
   constructor(
+    public scoreboardService: ScoreboardService,
     private popoverCtrl: PopoverController,
     private loadingService: LoadingService,
     private alertService: AlertService,
-    private scoreboardService: ScoreboardService,
     private adService: AdService,
   ) { }
 

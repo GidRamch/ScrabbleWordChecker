@@ -23,8 +23,15 @@
             </thead>
             <tbody>
               <tr *ngFor="let player of players">
-                <td>{{player.name}}</td>
-                <td (click)="scoreTapped(player.name, player.score)">{{player.score}}</td>
+                <td class="nameField">
+                  <ion-icon *ngIf="scoreboardService.lastEditedPlayer?.name === player.name" name="checkmark" slot="icon-only"></ion-icon>
+                  {{player.name}}
+                </td>
+                <td (click)="scoreTapped(player.name, player.score)">
+                  <div>
+                    {{player.score}}
+                  </div>
+                </td>
                 <td>
                   <ion-button fill="clear" (click)="deletePlayer(player.name)">
                     <ion-icon name="trash" slot="icon-only"></ion-icon>
