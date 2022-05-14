@@ -33,7 +33,9 @@ export class DatabaseService {
     try {
       loading = await this.loadingService.present('Importing new database. This will only take a moment...');
 
-      await CapacitorSQLite.copyFromAssets();
+      await CapacitorSQLite.copyFromAssets({
+        overwrite: true,
+      });
       await this.storageService.set(DEFINITION_DB_VERSION_STORAGE_KEY, DEFINITION_DB_VERSION);
 
       if (loading) { loading.dismiss(); }
