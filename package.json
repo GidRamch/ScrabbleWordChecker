@@ -1,7 +1,7 @@
 {
   "name": "scrabble-word-checker",
   "description": "Offline Scrabble Checker",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "author": "GidSchwifty",
   "homepage": "https://gideonr.com/",
   "scripts": {
