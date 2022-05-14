@@ -10,6 +10,7 @@ import { ScoreboardPage } from './scoreboard.page';
 import { ScoreboardService } from './scoreboard.service';
 import { AddPlayerComponent } from './components/add-player/add-player.component';
 import { EditScoreComponent } from './components/edit-score/edit-score.component';
+import { ReorderPlayersComponent } from './components/reorder-players/reorder-players.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,12 @@ import { EditScoreComponent } from './components/edit-score/edit-score.component
     IonicModule,
     ScoreboardPageRoutingModule,
   ],
-  declarations: [ScoreboardPage, AddPlayerComponent, EditScoreComponent],
+  declarations: [
+    ScoreboardPage,
+    AddPlayerComponent,
+    EditScoreComponent,
+    ReorderPlayersComponent,
+  ],
   providers: [ScoreboardService,]
 })
 export class ScoreboardPageModule { }

@@ -9,6 +9,7 @@ import { LoadingService } from 'src/app/services/loading/loading.service';
 import { environment } from 'src/environments/environment';
 import { AddPlayerComponent } from './components/add-player/add-player.component';
 import { EditScoreComponent } from './components/edit-score/edit-score.component';
+import { ReorderPlayersComponent } from './components/reorder-players/reorder-players.component';
 import { ScoreboardService } from './scoreboard.service';
 
 @Component({
@@ -77,6 +78,7 @@ export class ScoreboardPage implements OnInit {
     }
 
     await this.scoreboardService.setPlayers([]);
+    await this.scoreboardService.setLastPlayedName(null);
     this.players = await this.scoreboardService.getPlayers();
     this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
   }
@@ -88,6 +90,7 @@ export class ScoreboardPage implements OnInit {
     }
 
     await this.scoreboardService.resetScores();
+    await this.scoreboardService.setLastPlayedName(null);
     this.players = await this.scoreboardService.getPlayers();
     this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
   }
@@ -95,6 +98,10 @@ export class ScoreboardPage implements OnInit {
   public async deletePlayer(name: string): Promise<void> {
     if (!(await this.alertService.confirm('Delete Player?', `Are you sure you want to delete ${name}?`))) {
       return
+    }
+
+    if (name == this.lastPlayedName) {
+      await this.scoreboardService.setLastPlayedName(null);
     }
 
     await this.scoreboardService.removePlayer(name);
@@ -124,5 +131,24 @@ export class ScoreboardPage implements OnInit {
     await this.scoreboardService.setScore(newScore, name);
     this.players = await this.scoreboardService.getPlayers();
     this.lastPlayedName = await this.scoreboardService.getLastPlayedName();
+  }
+
+
+  public async openReorderPlayers(): Promise<void> {
+    const popover = await this.popoverCtrl.create({
+      componentProps: {
+        players: this.players,
+      },
+      component: ReorderPlayersComponent,
+      cssClass: 'info-modal',
+      animated: false,
+    });
+    await popover.present();
+    const newPlayers = (await popover.onDidDismiss()).data;
+    if (!newPlayers) {
+      return;
+    }
+    this.scoreboardService.setPlayers(newPlayers);
+    this.players = await this.scoreboardService.getPlayers();
   }
 }

@@ -54,7 +54,6 @@ export class ScoreboardService {
 
   public async resetScores(): Promise<void> {
     const players = await this.getPlayers();
-    this.setLastPlayedName(null);
     players.forEach(el => el.score = 0);
     this.setPlayers(players);
   }
