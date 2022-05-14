@@ -119,7 +119,7 @@ export class ScoreboardPage implements OnInit {
     await popover.present();
     const newScore = (await popover.onDidDismiss()).data;
 
-    if (!newScore) { return; }
+    if (newScore == undefined || newScore == null) { return; }
 
     await this.scoreboardService.setScore(newScore, name);
     this.players = await this.scoreboardService.getPlayers();
