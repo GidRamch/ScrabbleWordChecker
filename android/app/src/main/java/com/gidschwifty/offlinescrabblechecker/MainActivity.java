@@ -1,5 +1,4 @@
-package io.ionic.starter;
-
+package com.gidschwifty.offlinescrabblechecker;
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;
 

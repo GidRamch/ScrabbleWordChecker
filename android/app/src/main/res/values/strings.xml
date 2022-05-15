@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Offline Scrabble Checker</string>
     <string name="title_activity_main">Offline Scrabble Checker</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="package_name">com.gidschwifty.offlinescrabblechecker</string>
+    <string name="custom_url_scheme">com.gidschwifty.offlinescrabblechecker</string>
     <string name="admob_app_id">ca-app-pub-1957586325602739~7249554342</string>
 </resources>
