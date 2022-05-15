@@ -71,12 +71,12 @@
         </ion-button>
       </ion-col>
 
-      <ion-col *ngIf="status === 'ready' && !players?.length" size="12" size-sm="10" offset-sm="1" size-md="8"
+      <ion-col *ngIf="status === pageStatuses.ready && !players?.length" size="12" size-sm="10" offset-sm="1" size-md="8"
         offset-md="2" size-xl="6" offset-xl="3">
         <h1>Click the ADD PLAYER button to create a new player!</h1>
       </ion-col>
 
-      <ion-col *ngIf="status === 'ready' && players?.length" size="12" size-sm="10" offset-sm="1" size-md="8"
+      <ion-col *ngIf="status === pageStatuses.ready && players?.length" size="12" size-sm="10" offset-sm="1" size-md="8"
         offset-md="2" size-xl="6" offset-xl="3">
         <h1>Tap the scores to edit! <br><br> You can enter a new score or add points to your current score!</h1>
       </ion-col>

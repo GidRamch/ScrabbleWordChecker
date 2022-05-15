@@ -120,8 +120,8 @@ export class FinderPage implements OnInit {
 
     const queryString = this.generateSelectQuery(inputLetters);
 
-    const words = (await this.databaseService.executeQuery(queryString, 'definitions-large'))
-    
+    const words = (await this.databaseService.executeQuery(queryString, 'definitions-large'));
+
     if (!words?.length) {
       throw Error('No words found!');
     }

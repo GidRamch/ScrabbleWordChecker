@@ -18,7 +18,7 @@ type Status = 'ready' | 'waiting' | 'invalid' | 'valid'; // Status type
   styleUrls: ['./check.page.scss'],
 })
 export class CheckPage implements OnInit, ViewDidEnter {
-  
+
   public letterPoints = {
     a: 1, b: 3, c: 3, d: 2, e: 1,
     f: 4, g: 2, h: 4, i: 1, j: 8,
@@ -78,6 +78,19 @@ export class CheckPage implements OnInit, ViewDidEnter {
   }
 
 
+
+  /**
+   * Opens the info popover
+   */
+  public async openInfo(): Promise<void> {
+    const popover = this.popoverCtrl.create({
+      component: InfoComponent,
+      cssClass: 'info-modal',
+    });
+    return (await popover).present();
+  }
+
+
   /**
    * Checks the inputted word validity, by checking the appropriate JSON file,
    * then updates the status variable as required.
@@ -127,22 +140,10 @@ export class CheckPage implements OnInit, ViewDidEnter {
   private calculatePoints(word: string): number {
     let points = 0;
 
-    for (let letter of word) {
+    for (const letter of word) {
       points += this.letterPoints[letter] ?? 0;
     }
-  
-    return points;
-  }
 
-  
-  /**
-   * Opens the info popover
-   */
-  async openInfo(): Promise<void> {
-    const popover = this.popoverCtrl.create({
-      component: InfoComponent,
-      cssClass: 'info-modal',
-    });
-    return (await popover).present();
+    return points;
   }
 }

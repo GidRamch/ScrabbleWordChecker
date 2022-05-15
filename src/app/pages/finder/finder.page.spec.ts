@@ -9,7 +9,7 @@ describe('FinderPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FinderPage ],
+      declarations: [FinderPage],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 

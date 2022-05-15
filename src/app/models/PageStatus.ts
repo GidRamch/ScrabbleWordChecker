@@ -1,1 +1,6 @@
-export type PageStatus = 'ready' | 'waiting' | 'invalid' | 'valid';
+export enum PageStatus {
+  ready,
+  waiting,
+  invalid,
+  valid,
+}

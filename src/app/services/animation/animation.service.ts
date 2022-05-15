@@ -12,6 +12,7 @@ export class AnimationService {
   /**
    * Animates the inputted element using a bounce effect,
    * based on scale.
+   *
    * @param element reference to element to animate
    */
   scaleBounce(element: Element): void {

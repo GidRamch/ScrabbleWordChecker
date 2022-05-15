@@ -17,4 +17,4 @@ import { DonatePage } from './donate.page';
   ],
   declarations: [DonatePage]
 })
-export class DonatePageModule {}
+export class DonatePageModule { }

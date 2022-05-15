@@ -30,7 +30,7 @@ export class ScoreboardService {
 
   public async removePlayer(name: string): Promise<void> {
     const players = await this.getPlayers();
-    let newPlayers = players.filter(el => el.name !== name);
+    const newPlayers = players.filter(el => el.name !== name);
     this.setPlayers(newPlayers);
   }
 

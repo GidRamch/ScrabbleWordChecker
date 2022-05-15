@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'finder',
-    loadChildren: () => import('./pages/finder/finder.module').then( m => m.FinderPageModule)
+    loadChildren: () => import('./pages/finder/finder.module').then(m => m.FinderPageModule)
   },
 ];
 

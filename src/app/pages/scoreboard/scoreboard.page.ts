@@ -23,8 +23,8 @@ export class ScoreboardPage implements OnInit {
   public lastPlayedName: string;
 
   public title = SCORE_TITLE; // Title of page;
-  public status: PageStatus = 'ready';
-
+  public status: PageStatus = PageStatus.ready;
+  public pageStatuses = PageStatus;
 
   constructor(
     public scoreboardService: ScoreboardService,
@@ -40,7 +40,7 @@ export class ScoreboardPage implements OnInit {
     this.initialize();
   }
 
-  private async initialize(): Promise<void> {
+  public async initialize(): Promise<void> {
     let loading: HTMLIonLoadingElement;
     try {
       loading = await this.loadingService.present('Loading players...');
@@ -74,7 +74,7 @@ export class ScoreboardPage implements OnInit {
 
   public async clearPlayers(): Promise<void> {
     if (!(await this.alertService.confirm('Clear Players?', 'Are you sure you want to delete all players?'))) {
-      return
+      return;
     }
 
     await this.scoreboardService.setPlayers([]);
@@ -86,7 +86,7 @@ export class ScoreboardPage implements OnInit {
 
   public async resetScores(): Promise<void> {
     if (!(await this.alertService.confirm('Reset Scores?', 'Are you sure you want to reset all scores?'))) {
-      return
+      return;
     }
 
     await this.scoreboardService.resetScores();
@@ -97,10 +97,10 @@ export class ScoreboardPage implements OnInit {
 
   public async deletePlayer(name: string): Promise<void> {
     if (!(await this.alertService.confirm('Delete Player?', `Are you sure you want to delete ${name}?`))) {
-      return
+      return;
     }
 
-    if (name == this.lastPlayedName) {
+    if (name === this.lastPlayedName) {
       await this.scoreboardService.setLastPlayedName(null);
     }
 
@@ -110,7 +110,7 @@ export class ScoreboardPage implements OnInit {
   }
 
   public async scoreChanged(e: any, playerName: string): Promise<void> {
-    await this.scoreboardService.setScore(parseInt(e?.detail?.value?.length ? e.detail.value : "0"), playerName);
+    await this.scoreboardService.setScore(parseInt(e?.detail?.value?.length ? e.detail.value : '0', 10), playerName);
   }
 
   public async scoreTapped(name: string, score: number): Promise<void> {
@@ -126,7 +126,7 @@ export class ScoreboardPage implements OnInit {
     await popover.present();
     const newScore = (await popover.onDidDismiss()).data;
 
-    if (newScore == undefined || newScore == null) { return; }
+    if (newScore === undefined || newScore == null) { return; }
 
     await this.scoreboardService.setScore(newScore, name);
     this.players = await this.scoreboardService.getPlayers();

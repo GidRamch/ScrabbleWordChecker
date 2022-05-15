@@ -19,4 +19,4 @@ import { InfoComponent } from 'src/app/components/info/info.component';
   declarations: [CheckPage, InfoComponent],
   entryComponents: [InfoComponent],
 })
-export class CheckPageModule {}
+export class CheckPageModule { }

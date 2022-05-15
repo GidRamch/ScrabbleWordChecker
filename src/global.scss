@@ -34,15 +34,18 @@
 .separator {
   display: flex;
   align-items: center;
-  
-  &::before, &::after {
+
+  &::before,
+  &::after {
     content: '';
     flex: 1;
     border-bottom: 1px solid #dddddd;
   }
+
   &::before {
     margin-right: .25em;
   }
+
   &::after {
     margin-left: .25em;
   }
