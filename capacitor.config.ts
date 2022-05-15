@@ -5,9 +5,6 @@ const config: CapacitorConfig = {
   appName: 'Offline Scrabble Checker',
   webDir: 'www',
   bundledWebRuntime: false,
-  android: {
-    // backgroundColor: '#ffffff',
-  },
   plugins: {
     SplashScreen: {
       launchAutoHide: false,

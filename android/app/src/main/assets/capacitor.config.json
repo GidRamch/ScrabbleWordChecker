@@ -3,7 +3,6 @@
 	"appName": "Offline Scrabble Checker",
 	"webDir": "www",
 	"bundledWebRuntime": false,
-	"android": {},
 	"plugins": {
 		"SplashScreen": {
 			"launchAutoHide": false,

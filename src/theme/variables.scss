@@ -255,18 +255,3 @@
 ion-item {
   --transition: none;
 }
-
-
-.ion-color-statusbar {
-  --ion-color-base: var(--ion-color-statusbar);
-  --ion-color-base-rgb: var(--ion-color-statusbar-rgb);
-  --ion-color-contrast: var(--ion-color-statusbar-contrast);
-  --ion-color-contrast-rgb: var(--ion-color-statusbar-contrast-rgb);
-  --ion-color-shade: var(--ion-color-statusbar-shade);
-  --ion-color-tint: var(--ion-color-statusbar-tint);
-}
-
-/* Optional CSS, this is added for the flashing that happens when toggling between themes */
-ion-item {
-  --transition: none;
-}

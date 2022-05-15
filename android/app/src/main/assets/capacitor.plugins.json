@@ -1,13 +1,5 @@
 [
 	{
-		"pkg": "@capacitor-community/admob",
-		"classpath": "com.getcapacitor.community.admob.AdMob"
-	},
-	{
-		"pkg": "@capacitor-community/sqlite",
-		"classpath": "com.getcapacitor.community.database.sqlite.CapacitorSQLitePlugin"
-	},
-	{
 		"pkg": "@capacitor/app",
 		"classpath": "com.capacitorjs.plugins.app.AppPlugin"
 	},
@@ -20,12 +12,16 @@
 		"classpath": "com.capacitorjs.plugins.keyboard.KeyboardPlugin"
 	},
 	{
-		"pkg": "@capacitor/splash-screen",
-		"classpath": "com.capacitorjs.plugins.splashscreen.SplashScreenPlugin"
+		"pkg": "@capacitor-community/admob",
+		"classpath": "com.getcapacitor.community.admob.AdMob"
 	},
 	{
-		"pkg": "@capacitor/status-bar",
-		"classpath": "com.capacitorjs.plugins.statusbar.StatusBarPlugin"
+		"pkg": "@capacitor-community/sqlite",
+		"classpath": "com.getcapacitor.community.database.sqlite.CapacitorSQLitePlugin"
+	},
+	{
+		"pkg": "@capacitor/splash-screen",
+		"classpath": "com.capacitorjs.plugins.splashscreen.SplashScreenPlugin"
 	},
 	{
 		"pkg": "@capacitor/storage",
